@@ -1,0 +1,9 @@
+# the config file for apikey etc
+config.yaml
+# the pycharm stuff
+.idea
+# apple stuff
+.DS_Store
+
+
+
