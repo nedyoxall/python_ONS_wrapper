@@ -8,7 +8,7 @@ import itertools
 
 def get_collections_details(context):
     """
-    #TODO - useful docstring!!!
+    #TODO - useful docstring!!!!
     :return:
     """
     if context not in ['Census', 'Socio-Economic','Social','Economic']:
