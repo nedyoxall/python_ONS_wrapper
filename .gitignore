@@ -4,6 +4,7 @@ config.yaml
 .idea
 # apple stuff
 .DS_Store
-
-
+# compiled files
+*.pyc
+*/*.pyc
 
