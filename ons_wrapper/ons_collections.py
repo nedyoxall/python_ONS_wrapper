@@ -18,9 +18,9 @@ def get_collections_details(context):
 
     print 'Checking to see if < 1 week old collections data already exists...'
 
-    if os.path.isfile('../data/' + context.lower() + '_collections_df.pkl'):  # TODO add in date functionality
+    if os.path.isfile('../data/collections/' + context.lower() + '_collections_df.pkl'):  # TODO add in date functionality
         print 'Data found.\n'
-        collections_df = pd.read_pickle('../data/' + context.lower() + '_collections_df.pkl')
+        collections_df = pd.read_pickle('../data/collections/' + context.lower() + '_collections_df.pkl')
 
     else:
         print 'Data not found. Requesting from ONS API...'
@@ -75,7 +75,7 @@ def get_collections_details(context):
                                        'Name' : list(itertools.chain(*coll_names)),
                                        'Context' : [context] * df_length } )
 
-        collections_df.to_pickle('../data/' + context.lower() + '_collections_df.pkl')
+        collections_df.to_pickle('../data/collections' + context.lower() + '_collections_df.pkl')
 
     return collections_df
 
@@ -102,7 +102,7 @@ def get_all_collections_details(no_data_yet=True):
 
 
 all_colls = get_all_collections_details(no_data_yet=False)
-print all_colls.tail()
+print all_colls[all_colls.ID == 'AP1101EW']
 
 
 
