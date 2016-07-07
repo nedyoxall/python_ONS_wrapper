@@ -6,6 +6,7 @@ import pandas as pd
 import itertools
 
 
+
 def get_collections_details(context):
     """
     #TODO - useful docstring!!!!
@@ -18,7 +19,7 @@ def get_collections_details(context):
     print 'Checking to see if < 1 week old collections data already exists...'
 
     if os.path.isfile('../data/' + context.lower() + '_collections_df.pkl'):  # TODO add in date functionality
-        print 'Data found.'
+        print 'Data found.\n'
         collections_df = pd.read_pickle('../data/' + context.lower() + '_collections_df.pkl')
 
     else:
@@ -31,7 +32,7 @@ def get_collections_details(context):
         request_json = requests.get(url)
         collections_json = json.loads(request_json.text)
 
-        print 'Request completed... Saving as DataFrame.'
+        print 'Request completed... Saving as DataFrame.\n'
 
         collections_count = collections_json['ons']['collectionList']['collectionCount']
 
@@ -66,16 +67,42 @@ def get_collections_details(context):
             coll_geotypes.append(this_geotype)
             coll_names.append(this_name)
 
+        df_length = len(list(itertools.chain(*coll_ids)))
         collections_df = pd.DataFrame({'ID' : list(itertools.chain(*coll_ids)),
                                        'Description' : list(itertools.chain(*coll_descs)),
                                        'Time' : list(itertools.chain(*coll_times)),
                                        'Geography' : list(itertools.chain(*coll_geotypes)),
-                                       'Name' : list(itertools.chain(*coll_names))})
+                                       'Name' : list(itertools.chain(*coll_names)),
+                                       'Context' : [context] * df_length } )
 
         collections_df.to_pickle('../data/' + context.lower() + '_collections_df.pkl')
 
     return collections_df
 
+def get_all_collections_details(no_data_yet=True):
+    """
+    TODO - decent docstring!
+    :return:
+    """
+
+    if no_data_yet:
+        contexts = ['Census', 'Social','Economic']
+        # currently there are no 'Socio-Economic' datasets
+
+        for context in contexts:
+            print 'For the ' + context + ' context:'
+            get_collections_details(context)
+
+    census_colls_df = pd.read_pickle('../data/census_collections_df.pkl')
+    economic_colls_df = pd.read_pickle('../data/economic_collections_df.pkl')
+    social_colls_df = pd.read_pickle('../data/social_collections_df.pkl')
+
+    return pd.concat([census_colls_df, economic_colls_df, social_colls_df])
+
+
+
+all_colls = get_all_collections_details(no_data_yet=False)
+print all_colls.tail()
 
 
 
