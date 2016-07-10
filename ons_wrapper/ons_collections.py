@@ -87,22 +87,23 @@ def get_all_collections_details(no_data_yet=True):
 
     if no_data_yet:
         contexts = ['Census', 'Social','Economic']
-        # currently there are no 'Socio-Economic' datasets
+        # currently there are no 'Socio-Economic' cache
 
         for context in contexts:
             print 'For the ' + context + ' context:'
             get_collections_details(context)
 
-    census_colls_df = pd.read_pickle('../data/census_collections_df.pkl')
-    economic_colls_df = pd.read_pickle('../data/economic_collections_df.pkl')
-    social_colls_df = pd.read_pickle('../data/social_collections_df.pkl')
+    census_colls_df = pd.read_pickle('../data/collections/census_collections_df.pkl')
+    economic_colls_df = pd.read_pickle('../data/collections/economic_collections_df.pkl')
+    social_colls_df = pd.read_pickle('../data/collections/social_collections_df.pkl')
 
     return pd.concat([census_colls_df, economic_colls_df, social_colls_df])
 
 
 
 all_colls = get_all_collections_details(no_data_yet=False)
-print all_colls[all_colls.ID == 'AP1101EW']
+all_colls.to_csv('all_collections.csv', encoding = 'utf-8')
+
 
 
 
